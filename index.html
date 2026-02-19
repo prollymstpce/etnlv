@@ -2,37 +2,64 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eternal love</title>
     <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:wght@400;600&family=Noto+Serif+KR:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root { --black: #000000; --white: #ffffff; --easing: cubic-bezier(0.19, 1, 0.22, 1); }
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body, html { margin: 0; padding: 0; background: var(--black); color: var(--white); font-family: 'Noto Serif KR', serif; overflow: hidden; width: 100%; height: 100%; position: fixed; }
-        #main-wrapper { width: 100%; height: 100%; position: relative; z-index: 10; }
+        
+     
+        body, html { margin: 0; padding: 0; background: var(--black); color: var(--white); font-family: 'Noto Serif KR', serif; width: 100%; height: 100%; }
+        
+     
+        #main-wrapper { width: 100%; height: 100%; position: fixed; top:0; left:0; z-index: 10; overflow: hidden; }
         .viewport { display: flex; width: 300vw; height: 100vh; transition: transform 1.2s var(--easing); }
         section { width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .hint { font-size: 1.1rem; letter-spacing: 0.05rem; color: #ffffff; margin-bottom: 60px; text-align: center; line-height: 2.2; font-weight: 400; }
-        input { background: none; border: none; border-bottom: 2px solid #555; color: var(--white); font-size: 2.2rem; text-align: center; width: 240px; outline: none; transition: all 0.4s; letter-spacing: 0.5rem; border-radius: 0; font-family: sans-serif; }
+        
+        .hint { font-size: clamp(1rem, 4vw, 1.2rem); letter-spacing: 0.05rem; color: #ffffff; margin-bottom: 40px; text-align: center; line-height: 1.8; font-weight: 400; }
+        input { background: none; border: none; border-bottom: 2px solid #555; color: var(--white); font-size: 2.2rem; text-align: center; width: 220px; outline: none; transition: all 0.4s; letter-spacing: 0.5rem; border-radius: 0; font-family: sans-serif; }
         input:focus { border-bottom-color: var(--white); }
+
         #flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--white); opacity: 0; z-index: 100; pointer-events: none; transition: opacity 0.8s var(--easing); }
         #flash.active { opacity: 1; }
         
-        #letter-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--white); color: var(--black); display: none; flex-direction: column; align-items: center; z-index: 101; padding: 4vh 20px 6vh; }
+       
+        #letter-view { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--white); color: var(--black); 
+            display: none; flex-direction: column; align-items: center; 
+            z-index: 101; overflow-y: auto; 
+            -webkit-overflow-scrolling: touch;
+        }
         
-        .letter-box { width: 100%; height: 100%; border: 1px solid var(--black); padding: 6vh 25px; position: relative; display: flex; flex-direction: column; align-items: center; background: var(--white); opacity: 0; transform: translateY(20px); transition: all 2s var(--easing); }
+        .letter-box { 
+            width: 90%; max-width: 600px; 
+            min-height: 90%; 
+            margin: 5vh 0; 
+            border: 1px solid var(--black); 
+            padding: 40px 20px; 
+            position: relative; display: flex; flex-direction: column; align-items: center; 
+            background: var(--white); opacity: 0; transform: translateY(20px); 
+            transition: all 2s var(--easing); 
+        }
         
-        h1 { font-family: 'Pinyon Script', cursive; font-size: 2.8rem; margin-bottom: 5vh; text-align: center; font-weight: 400; color: var(--black); line-height: 1.2; }
+        h1 { font-family: 'Pinyon Script', cursive; font-size: clamp(2rem, 8vw, 2.8rem); margin-bottom: 30px; text-align: center; font-weight: 400; color: var(--black); line-height: 1.2; }
         
-        .letter-content { font-size: 1rem; line-height: 2.8; text-align: center; width: 100%; word-break: keep-all; font-weight: 400; color: var(--black); flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .letter-content b { font-family: 'Pinyon Script', cursive; font-weight: 400; color: var(--black); display: block; margin-top: 5vh; font-size: 2.2rem; }
+        .letter-content { 
+            font-size: clamp(0.9rem, 3.5vw, 1.05rem); 
+            line-height: 2.2; 
+            text-align: center; width: 100%; word-break: keep-all; font-weight: 400; color: var(--black); 
+            flex: 1; display: flex; flex-direction: column; justify-content: center; 
+        }
+        .letter-content b { font-family: 'Pinyon Script', cursive; font-weight: 400; color: var(--black); display: block; margin-top: 30px; font-size: 2rem; }
 
-        .footer-area { width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 4vh; }
-        .btn-black { border: 1px solid var(--black); background: none; padding: 14px 45px; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 0.25rem; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: all 0.3s; color: var(--black); outline: none; background-color: white; }
+        .footer-area { width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 40px; }
+        .btn-black { border: 1px solid var(--black); background: white; padding: 14px 40px; font-family: 'Playfair Display', serif; font-size: 0.8rem; letter-spacing: 0.2rem; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: all 0.3s; color: var(--black); outline: none; }
         .btn-black:active { background: var(--black); color: var(--white); }
         
-        .heart { position: absolute; color: var(--black); pointer-events: none; z-index: 105; font-size: 14px; animation: float 3.5s linear forwards; opacity: 0.5; }
-        @keyframes float { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.5; } 100% { transform: translateY(-100vh) scale(1.5) rotate(360deg); opacity: 0; } }
+        .heart { position: fixed; color: var(--black); pointer-events: none; z-index: 105; font-size: 14px; animation: float 3.5s linear forwards; opacity: 0.5; }
+        @keyframes float { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.5; } 100% { transform: translateY(-110vh) scale(1.5) rotate(360deg); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -105,7 +132,7 @@
                 const h = document.createElement('div');
                 h.innerHTML = '♥'; h.className = 'heart';
                 h.style.left = Math.random() * 100 + 'vw';
-                h.style.top = '100vh';
+                h.style.bottom = '-5vh';
                 h.style.fontSize = (Math.random() * 8 + 12) + 'px';
                 document.body.appendChild(h);
                 setTimeout(() => { h.remove(); }, 3500);
